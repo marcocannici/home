@@ -405,3 +405,6 @@ xterm*|rxvt*)
 *)
     ;;
 esac
+
+# added by Miniconda2 4.0.5 installer
+export PATH="/galileo/home/userexternal/mmatteuc/.miniconda/bin:$PATH"
