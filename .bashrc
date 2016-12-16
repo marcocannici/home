@@ -407,4 +407,5 @@ xterm*|rxvt*)
 esac
 
 # added by Miniconda2 4.0.5 installer
-export PATH="/galileo/home/userexternal/mmatteuc/.miniconda/bin:$PATH"
+export PATH="/galileo/home/userexternal/fvisin00/.miniconda/bin:$PATH"
+export PYTHONPATH=$PYTHONPATH:$HOME/exp/dataset_loaders
