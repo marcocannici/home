@@ -59,23 +59,6 @@ python() {
     fi
 }
 
-# Montreal
-lisa() {
-    if [ $# == 0 ]; then
-        sshpass -f ~/.lisa ssh -YC visin@elisa1
-    elif [ $# == 1 ]; then
-        sshpass -f ~/.lisa ssh -YC -L $1:localhost:$1 visin@elisa1
-    else
-        echo "usage: sshlisa [port]"
-    fi
-}
-alias lisassh=lisa
-lisascp() {
-    sshpass -f ~/.lisa scp -Cr visin@elisa1.iro.umontreal.ca:$1 $2
-}
-lisarsync() {
-    sshpass -f ~/.lisa rsync -a -X --partial -h --progress --copy-links visin@elisa1.iro.umontreal.ca:$1 $2
-}
 alias squeue='squeue -o "%.6i %.1t %.6q %.7m %.12b %.3C %.3D %.18k %.11L %R"'
 
 # Quick and dirty installation of packages with pip from GitHub.
@@ -150,11 +133,7 @@ FC(){ export THEANO_FLAGS=compiler=fast_compile${THEANO_FLAGS:+,${THEANO_FLAGS}}
 PROFILE(){ export CUDA_LAUNCH_BLOCKING=1;export THEANO_FLAGS="$THEANO_FLAGS_INIT",proﬁle_memory=True,profile=True,$THEANO_FLAGS; }
 PL(){ export THEANO_FLAGS="$THEANO_FLAGS",dnn.conv.algo_bwd_filter=time_once,dnn.conv.algo_bwd_data=time_once,optimizer_excluding=local_softmax_dnn_grad; }
 TF(){ echo $THEANO_FLAGS; }
-TEN() {
-    export LIBRARY_PATH=:/Tmp/lisa/os_v5/cudnn_v4:/Tmp/lisa/os_v5/lib:/Tmp/lisa/os_v5/lib64:/usr/local/lib:/usr/lib64/atlas/::/usr/local/cuda/lib/:/usr/local/cuda/lib64/:/usr/local/cuda/lib/:/usr/local/cuda/lib64/:/Tmp/lisa/os_v5/lib32:/u/visin/.local/lib/libgpuarray/lib64/:/u/visin/.local/lib/libgpuarray/lib
-    export LD_LIBRARY_PATH=/Tmp/lisa/os_v5/cudnn_v4:/Tmp/lisa/os_v5/lib:/Tmp/lisa/os_v5/lib64:/usr/local/lib:/usr/lib64/atlas/::/usr/local/cuda/lib/:/usr/local/cuda/lib64/:/usr/local/cuda/lib/:/usr/local/cuda/lib64/:/Tmp/lisa/os_v5/lib32:/u/visin/.local/lib/libgpuarray/lib64/:/u/visin/.local/lib/libgpuarray/lib
-    export CPATH=/Tmp/lisa/os_v5/cudnn_v4:/Tmp/lisa/os_v5/include::/u/visin/.local/lib/libgpuarray/include
-}
+
 CVD_CLR(){ export CUDA_VISIBLE_DEVICES=''; }
 CVD0(){ export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:+${CUDA_VISIBLE_DEVICES},}0; }
 CVD1(){ export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:+${CUDA_VISIBLE_DEVICES},}1; }
@@ -170,100 +149,6 @@ D0(){ export DISPLAY=localhost:0.0; }
 D10(){ export DISPLAY=localhost:10.0; }
 D11(){ export DISPLAY=localhost:11.0; }
 D12(){ export DISPLAY=localhost:12.0; }
-
-# Frameworks update
-# ==================
-GITUSER='fvisin'
-# theano
-uptheano() {
-    currdir=`pwd`
-    # normal
-    if [ -z ${VIRTUAL_ENV} ]; then
-        export THEANO_PATH=$HOME/exp/theano/theano
-        if [ ! -d $THEANO_PATH ]; then
-            echo "Installing theano for the first time..."
-            git clone -o theano 'git@github.com:Theano/Theano.git' $THEANO_PATH
-            cd $THEANO_PATH
-            # python setup.py develop
-        else
-            echo "Upgrading theano..."
-            cd $THEANO_PATH
-            git fetch theano
-            git merge --ff-only theano/master master
-            PPATH=$PYTHONPATH
-            export PYTHONPATH=$PYTHONPATH:$THEANO_PATH
-            bin/theano-cache clear
-            export PYTHONPATH=$PPATH
-        fi
-    # virtual environment
-    else
-        export THEANO_PATH=$HOME/exp/theano/$CONDA_DEFAULT_ENV/
-        if [ ! -d $THEANO_PATH ]; then
-            echo "Installing theano for the first time in this environment..."
-            git clone -o theano 'git@github.com:Theano/Theano.git' $THEANO_PATH
-            cd $THEANO_PATH
-            git clone -o theano 'git@github.com:$GITUSER/Theano.git' $THEANO_PATH
-            git remote add origin git@github.com:fvisin/Theano.git
-            python setup.py develop
-        else
-            echo "Upgrading theano in this environment..."
-            cd $THEANO_PATH
-            git fetch theano
-            git merge --ff-only theano/master master
-            bin/theano-cache clear
-        fi
-    fi
-    cd $currdir
-}
-
-# fuel and blocks
-upblocks() {
-    BL
-    currdir=`pwd`
-    # fuel 
-    if [ ! -d ~/exp/fuel ]; then
-        echo "Installing fuel for the first time..."
-        cd "$HOME"/exp
-        git clone git@github.com:$GITUSER/fuel.git
-        cd fuel
-        git remote add fuel git@github.com:bartvm/fuel.git
-    else
-        echo "Upgrading fuel..."
-    fi
-    # update
-    cd ~/exp/fuel
-    git fetch fuel
-    git merge --ff-only fuel/master master
-    pip install -e file:.#egg=fuel[test,docs]
-    python setup.py build_ext --inplace  # rebuild cython
-
-    # blocks 
-    if [ ! -d ~/exp/blocks ]; then
-        echo "Installing blocks for the first time..."
-        cd "$HOME"/exp
-        git clone git@github.com:$GITUSER/blocks.git 
-        cd blocks
-        git remote add blocks git@github.com:bartvm/blocks.git
-    else
-        echo "Upgrading blocks..."
-    fi
-    # update
-    cd ~/exp/blocks
-    git fetch blocks
-    git merge --ff-only blocks/master master
-    pip install -e file:.#egg=blocks[test,docs] -r requirements.txt
-    cd $currdir
-}
-
-# arctic
-uparctic() {
-    AR
-    currdir=`pwd`
-    cd ~/exp/arctic
-    git fetch arctic
-    git merge --ff-only arctic/master master
-    cd $currdir
-}
 
 # conda: we don't want to mess with system-wide conda
 upconda() {
@@ -300,11 +185,7 @@ CLR() {
     unset VIRTUAL_ENV
 }
 
-export -f uptheano
-export -f upblocks
-export -f uparctic
 export -f BL
 export -f AR
 export -f CLR
 export -f TF
-export -f TEN
