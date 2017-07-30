@@ -37,27 +37,27 @@ alias sshpw='ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no
 # Force 256 colors tmux
 alias tmux="TERM=xterm-256color tmux"
 
-alias python_no_tcmalloc="/usr/bin/python"
-python() {
-    if [[ -f /usr/local/lib/libtcmalloc.so.4 ]]; then
-        msg="WARNING:Using Google's malloc.\nCall python_no_tcmalloc "
-        msg=$msg"to use the default python instead.\n"
-        echo -e $msg
-        LD_PRELOAD=/usr/local/lib/libtcmalloc.so.4 /usr/bin/python "$@"
-    elif [[ -f /usr/lib/libtcmalloc.so.4 ]]; then
-        msg="WARNING:Using Google's malloc.\nCall python_no_tcmalloc "
-        msg=$msg"to use the default python instead.\n"
-        echo -e $msg
-        LD_PRELOAD=/usr/lib/libtcmalloc.so.4 /usr/bin/python "$@"
-    elif [[ -f $HOME/.local/lib/libtcmalloc.so.4 ]]; then
-        msg="WARNING:Using Google's malloc.\nCall python_no_tcmalloc "
-        msg=$msg"to use the default python instead.\n"
-        echo -e $msg
-        LD_PRELOAD=$HOME/.local/lib/libtcmalloc.so.4 /usr/bin/python "$@"
-    else
-        /usr/bin/python "$@"
-    fi
-}
+# alias python_no_tcmalloc=$HOME"/.miniconda/bin/python"
+# python() {
+#     if [[ -f /usr/local/lib/libtcmalloc.so.4 ]]; then
+#         msg="WARNING:Using Google's malloc.\nCall python_no_tcmalloc "
+#         msg=$msg"to use the default python instead.\n"
+#         echo -e $msg
+#         LD_PRELOAD=/usr/local/lib/libtcmalloc.so.4 $HOME/.miniconda/bin/python "$@"
+#     elif [[ -f /usr/lib/libtcmalloc.so.4 ]]; then
+#         msg="WARNING:Using Google's malloc.\nCall python_no_tcmalloc "
+#         msg=$msg"to use the default python instead.\n"
+#         echo -e $msg
+#         LD_PRELOAD=/usr/lib/libtcmalloc.so.4 $HOME/.miniconda/bin/python "$@"
+#     elif [[ -f $HOME/.local/lib/libtcmalloc.so.4 ]]; then
+#         msg="WARNING:Using Google's malloc.\nCall python_no_tcmalloc "
+#         msg=$msg"to use the default python instead.\n"
+#         echo -e $msg
+#         LD_PRELOAD=$HOME/.local/lib/libtcmalloc.so.4 $HOME/.miniconda/bin/python "$@"
+#     else
+#         $HOME/.miniconda/bin/python "$@"
+#     fi
+# }
 
 alias squeue='squeue -o "%.6i %.1t %.6q %.7m %.12b %.3C %.3D %.18k %.11L %R"'
 
@@ -157,17 +157,17 @@ upconda() {
 
 # ENVIRONMENTS
 # =============
-BL() {
-    export VIRTUAL_ENV="$HOME/.miniconda/envs/blocks"
+MARIA() {
+    export VIRTUAL_ENV="$HOME/.miniconda/envs/mariana"
     export PATH="$HOME/.miniconda/bin:$PATH"
-    # export PYTHONPATH="$HOME/.miniconda/envs/blocks/lib/python2.7/site-packages/:$PYTHONPATH"
-    source activate blocks
+    export PYTHONPATH="$HOME/exp/mariana/code:$PYTHONPATH"
+    source activate mariana
 }
-AR() {
-    export VIRTUAL_ENV="$HOME/.miniconda/envs/arctic"
+TF() {
+    export VIRTUAL_ENV="$HOME/.miniconda/envs/tf"
     export PATH="$HOME/.miniconda/bin:$PATH"
-    # export PYTHONPATH="$HOME/.miniconda/envs/arctic/lib/python2.7/site-packages/:$PYTHONPATH"
-    source activate arctic
+    export PYTHONPATH="$HOME/exp/mariana/code:$PYTHONPATH"
+    source activate tf
 }
 TH() {
     echo "Resetting THEANO_FLAGS, PYTHONPATH and PATH ..."
@@ -185,7 +185,7 @@ CLR() {
     unset VIRTUAL_ENV
 }
 
-export -f BL
-export -f AR
+export -f MARIA
 export -f CLR
 export -f TF
+export -f TH

@@ -172,7 +172,7 @@ IGNOREEOF=10   # Shell only exists after the 10th consecutive Ctrl-d
 
 # PATHS
 #=======
-export PYTHONPATH_INIT="$PYTHONPATH"
+# export PYTHONPATH_INIT="$PYTHONPATH"
 export PATH=$HOME/.local/bin:${PATH:+:${PATH}}
 export PATH_INIT="$PATH"
 
@@ -281,4 +281,4 @@ xterm*|rxvt*)
 esac
 
 # Uncomment to use my own conda env
-# export PATH=$HOME/.miniconda/bin:$PATH
+export PATH=$HOME/.miniconda/bin:$PATH
