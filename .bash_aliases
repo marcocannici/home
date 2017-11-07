@@ -150,6 +150,16 @@ D10(){ export DISPLAY=localhost:10.0; }
 D11(){ export DISPLAY=localhost:11.0; }
 D12(){ export DISPLAY=localhost:12.0; }
 
+
+# Repeat a command n times: useful to repeat simple experiments 
+run() {
+    number=$1
+    shift
+    for n in $(seq $number); do
+      $@
+    done
+}
+
 # conda: we don't want to mess with system-wide conda
 upconda() {
     $HOME/.miniconda/bin/conda update conda
