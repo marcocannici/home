@@ -56,28 +56,6 @@ alias tmux="TERM=xterm-256color tmux"
 #alias tmux="tmux -2"  # Force tmux to use 256 colors
 . $HOME/.tmux/set_tmux_config.sh
 
-alias python_no_tcmalloc="/usr/bin/python"
-python() {
-    if [[ -f /usr/local/lib/libtcmalloc.so.4 ]]; then
-        msg="WARNING:Using Google's malloc.\nCall python_no_tcmalloc "
-        msg=$msg"to use the default python instead.\n"
-        echo -e $msg
-        LD_PRELOAD=/usr/local/lib/libtcmalloc.so.4 /usr/bin/python "$@"
-    elif [[ -f /usr/lib/libtcmalloc.so.4 ]]; then
-        msg="WARNING:Using Google's malloc.\nCall python_no_tcmalloc "
-        msg=$msg"to use the default python instead.\n"
-        echo -e $msg
-        LD_PRELOAD=/usr/lib/libtcmalloc.so.4 /usr/bin/python "$@"
-    elif [[ -f $HOME/.local/lib/libtcmalloc.so.4 ]]; then
-        msg="WARNING:Using Google's malloc.\nCall python_no_tcmalloc "
-        msg=$msg"to use the default python instead.\n"
-        echo -e $msg
-        LD_PRELOAD=$HOME/.local/lib/libtcmalloc.so.4 /usr/bin/python "$@"
-    else
-        /usr/bin/python "$@"
-    fi
-}
-
 # Autocomplete ssh names in bash (defined in .ssh/config)
 _complete_ssh_hosts () {
     COMPREPLY=()
@@ -158,41 +136,6 @@ export -f cpdataset
 # Manage the weird pkscreen routine for lisa lab
 alias frascreen="pkscreen; sleep 5; screen -r; sleep 2"
 
-# Quick set THEANO_FLAGS
-CPU(){ export THEANO_FLAGS="$THEANO_FLAGS_INIT",device=cpu,floatX=float32; }
-CPU0(){ export THEANO_FLAGS="$THEANO_FLAGS_INIT",device=cpu0,floatX=float32; }
-CPU1(){ export THEANO_FLAGS="$THEANO_FLAGS_INIT",device=cpu1,floatX=float32; }
-CPU2(){ export THEANO_FLAGS="$THEANO_FLAGS_INIT",device=cpu2,floatX=float32; }
-GPU(){ export THEANO_FLAGS="$THEANO_FLAGS_INIT",device=gpu,floatX=float32,scan.allow_gc=False; }
-GPU0FAST(){ export THEANO_FLAGS="$THEANO_FLAGS_INIT",device=gpu0,floatX=float32,scan.allow_gc=False; }
-GPU1FAST(){ export THEANO_FLAGS="$THEANO_FLAGS_INIT",device=gpu1,floatX=float32,scan.allow_gc=False; }
-GPU2FAST(){ export THEANO_FLAGS="$THEANO_FLAGS_INIT",device=gpu2,floatX=float32,scan.allow_gc=False; }
-GPU3FAST(){ export THEANO_FLAGS="$THEANO_FLAGS_INIT",device=gpu3,floatX=float32,scan.allow_gc=False; }
-GPU4FAST(){ export THEANO_FLAGS="$THEANO_FLAGS_INIT",device=gpu4,floatX=float32,scan.allow_gc=False; }
-GPU5FAST(){ export THEANO_FLAGS="$THEANO_FLAGS_INIT",device=gpu5,floatX=float32,scan.allow_gc=False; }
-GPU6FAST(){ export THEANO_FLAGS="$THEANO_FLAGS_INIT",device=gpu6,floatX=float32,scan.allow_gc=False; }
-GPU7FAST(){ export THEANO_FLAGS="$THEANO_FLAGS_INIT",device=gpu7,floatX=float32,scan.allow_gc=False; }
-GPU8FAST(){ export THEANO_FLAGS="$THEANO_FLAGS_INIT",device=gpu8,floatX=float32,scan.allow_gc=False; }
-GPU0(){ export THEANO_FLAGS="$THEANO_FLAGS_INIT",device=gpu0,floatX=float32; }
-GPU1(){ export THEANO_FLAGS="$THEANO_FLAGS_INIT",device=gpu1,floatX=float32; }
-GPU2(){ export THEANO_FLAGS="$THEANO_FLAGS_INIT",device=gpu2,floatX=float32; }
-GPU3(){ export THEANO_FLAGS="$THEANO_FLAGS_INIT",device=gpu3,floatX=float32; }
-GPU4(){ export THEANO_FLAGS="$THEANO_FLAGS_INIT",device=gpu4,floatX=float32; }
-GPU5(){ export THEANO_FLAGS="$THEANO_FLAGS_INIT",device=gpu5,floatX=float32; }
-CUDA(){ export THEANO_FLAGS="$THEANO_FLAGS_INIT",device=cuda,floatX=float32; }
-CUDA0(){ export THEANO_FLAGS="$THEANO_FLAGS_INIT",device=cuda0,floatX=float32; }
-CUDA1(){ export THEANO_FLAGS="$THEANO_FLAGS_INIT",device=cuda1,floatX=float32; }
-CUDA2(){ export THEANO_FLAGS="$THEANO_FLAGS_INIT",device=cuda2,floatX=float32; }
-CUDA3(){ export THEANO_FLAGS="$THEANO_FLAGS_INIT",device=cuda3,floatX=float32; }
-FC(){ export THEANO_FLAGS=compiler=fast_compile${THEANO_FLAGS:+,${THEANO_FLAGS}}; }
-PROFILE(){ export CUDA_LAUNCH_BLOCKING=1;export THEANO_FLAGS="$THEANO_FLAGS_INIT",proﬁle_memory=True,profile=True,$THEANO_FLAGS; }
-PL(){ export THEANO_FLAGS="$THEANO_FLAGS",dnn.conv.algo_bwd_filter=time_once,dnn.conv.algo_bwd_data=time_once,optimizer_excluding=local_softmax_dnn_grad; }
-TF(){ echo $THEANO_FLAGS; }
-TEN() {
-    export LIBRARY_PATH=:/Tmp/lisa/os_v5/cudnn_v4:/Tmp/lisa/os_v5/lib:/Tmp/lisa/os_v5/lib64:/usr/local/lib:/usr/lib64/atlas/::/usr/local/cuda/lib/:/usr/local/cuda/lib64/:/usr/local/cuda/lib/:/usr/local/cuda/lib64/:/Tmp/lisa/os_v5/lib32:/u/visin/.local/lib/libgpuarray/lib64/:/u/visin/.local/lib/libgpuarray/lib
-    export LD_LIBRARY_PATH=/Tmp/lisa/os_v5/cudnn_v4:/Tmp/lisa/os_v5/lib:/Tmp/lisa/os_v5/lib64:/usr/local/lib:/usr/lib64/atlas/::/usr/local/cuda/lib/:/usr/local/cuda/lib64/:/usr/local/cuda/lib/:/usr/local/cuda/lib64/:/Tmp/lisa/os_v5/lib32:/u/visin/.local/lib/libgpuarray/lib64/:/u/visin/.local/lib/libgpuarray/lib
-    export CPATH=/Tmp/lisa/os_v5/cudnn_v4:/Tmp/lisa/os_v5/include::/u/visin/.local/lib/libgpuarray/include
-}
 CVD_CLR(){ export CUDA_VISIBLE_DEVICES=''; }
 CVD0(){ export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:+${CUDA_VISIBLE_DEVICES},}0; }
 CVD1(){ export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:+${CUDA_VISIBLE_DEVICES},}1; }
@@ -210,140 +153,23 @@ D10(){ export DISPLAY=localhost:10.0; }
 D11(){ export DISPLAY=localhost:11.0; }
 D12(){ export DISPLAY=localhost:12.0; }
 
-# Frameworks update
-# ==================
-GITUSER='fvisin'
-# theano
-uptheano() {
-    currdir=`pwd`
-    # normal
-    if [ -z ${VIRTUAL_ENV} ]; then
-        export THEANO_PATH=$HOME/exp/theano/theano
-        if [ ! -d $THEANO_PATH ]; then
-            echo "Installing theano for the first time..."
-            git clone -o theano 'git@github.com:Theano/Theano.git' $THEANO_PATH
-            cd $THEANO_PATH
-            # python setup.py develop
-        else
-            echo "Upgrading theano..."
-            cd $THEANO_PATH
-            git fetch theano
-            git merge --ff-only theano/master master
-            PPATH=$PYTHONPATH
-            export PYTHONPATH=$PYTHONPATH:$THEANO_PATH
-            bin/theano-cache clear
-            export PYTHONPATH=$PPATH
-        fi
-    # virtual environment
-    else
-        export THEANO_PATH=$HOME/exp/theano/$CONDA_DEFAULT_ENV/
-        if [ ! -d $THEANO_PATH ]; then
-            echo "Installing theano for the first time in this environment..."
-            git clone -o theano 'git@github.com:Theano/Theano.git' $THEANO_PATH
-            cd $THEANO_PATH
-            git clone -o theano 'git@github.com:$GITUSER/Theano.git' $THEANO_PATH
-            git remote add origin git@github.com:fvisin/Theano.git
-            python setup.py develop
-        else
-            echo "Upgrading theano in this environment..."
-            cd $THEANO_PATH
-            git fetch theano
-            git merge --ff-only theano/master master
-            bin/theano-cache clear
-        fi
-    fi
-    cd $currdir
-}
-
-# fuel and blocks
-upblocks() {
-    BL
-    currdir=`pwd`
-    # fuel 
-    if [ ! -d ~/exp/fuel ]; then
-        echo "Installing fuel for the first time..."
-        cd "$HOME"/exp
-        git clone git@github.com:$GITUSER/fuel.git
-        cd fuel
-        git remote add fuel git@github.com:bartvm/fuel.git
-    else
-        echo "Upgrading fuel..."
-    fi
-    # update
-    cd ~/exp/fuel
-    git fetch fuel
-    git merge --ff-only fuel/master master
-    pip install -e file:.#egg=fuel[test,docs]
-    python setup.py build_ext --inplace  # rebuild cython
-
-    # blocks 
-    if [ ! -d ~/exp/blocks ]; then
-        echo "Installing blocks for the first time..."
-        cd "$HOME"/exp
-        git clone git@github.com:$GITUSER/blocks.git 
-        cd blocks
-        git remote add blocks git@github.com:bartvm/blocks.git
-    else
-        echo "Upgrading blocks..."
-    fi
-    # update
-    cd ~/exp/blocks
-    git fetch blocks
-    git merge --ff-only blocks/master master
-    pip install -e file:.#egg=blocks[test,docs] -r requirements.txt
-    cd $currdir
-}
-
-# arctic
-uparctic() {
-    AR
-    currdir=`pwd`
-    cd ~/exp/arctic
-    git fetch arctic
-    git merge --ff-only arctic/master master
-    cd $currdir
-}
-
-# conda: we don't want to mess with system-wide conda
-upconda() {
-    $HOME/.miniconda/bin/conda update conda
-}
 
 # ENVIRONMENTS
 # =============
-BL() {
-    export VIRTUAL_ENV="$HOME/.miniconda/envs/blocks"
-    export PATH="$HOME/.miniconda/bin:$PATH"
-    # export PYTHONPATH="$HOME/.miniconda/envs/blocks/lib/python2.7/site-packages/:$PYTHONPATH"
-    source activate blocks
-}
-AR() {
-    export VIRTUAL_ENV="$HOME/.miniconda/envs/arctic"
-    export PATH="$HOME/.miniconda/bin:$PATH"
-    # export PYTHONPATH="$HOME/.miniconda/envs/arctic/lib/python2.7/site-packages/:$PYTHONPATH"
-    source activate arctic
-}
-TH() {
-    echo "Resetting THEANO_FLAGS, PYTHONPATH and PATH ..."
-    CLR
-    export PATH=$PATH:"/data/lisa/exp/visin/theano/theano/bin"
-    # export PYTHONPATH=$PYTHONPATH:"/data/lisa/exp/visin/theano/theano/"
+
+PY36() {
+    export VIRTUAL_ENV="$HOME/miniconda3/envs/py36-torch41-cu92"
+    export PATH="$HOME/miniconda3/envs/py36-torch41-cu92/bin:$PATH"
+    source activate py36-torch41-cu92
 }
 CLR() {
     if [ ! -z $CONDA_DEFAULT_ENV ]; then
-        source ~/.miniconda/bin/deactivate 
+        source ~/miniconda3/bin/deactivate 
     fi
-    export THEANO_FLAGS="$THEANO_FLAGS_INIT"
     export PYTHONPATH="$PYTHONPATH_INIT"
     export PATH="$PATH_INIT"
     unset VIRTUAL_ENV
 }
 
-export -f uptheano
-export -f upblocks
-export -f uparctic
-export -f BL
-export -f AR
 export -f CLR
-export -f TF
-export -f TEN
+export -f PY36

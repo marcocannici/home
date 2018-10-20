@@ -25,10 +25,10 @@
 #c.JupyterApp.answer_yes = False
 
 ## Full path of a config file.
-#c.JupyterApp.config_file = ''
+#c.JupyterApp.config_file = u''
 
 ## Specify a config file to load.
-#c.JupyterApp.config_file_name = ''
+#c.JupyterApp.config_file_name = u''
 
 ## Generate default config file.
 #c.JupyterApp.generate_config = False
@@ -58,6 +58,9 @@
 #  Ignored if allow_origin is set.
 #c.NotebookApp.allow_origin_pat = ''
 
+## Whether to allow the user to run the notebook as root.
+#c.NotebookApp.allow_root = False
+
 ## DEPRECATED use base_url
 #c.NotebookApp.base_project_url = '/'
 
@@ -70,20 +73,20 @@
 #  If not specified, the default browser will be determined by the `webbrowser`
 #  standard library module, which allows setting of the BROWSER environment
 #  variable to override it.
-c.NotebookApp.browser = 'google-chrome'
+#c.NotebookApp.browser = u''
 
 ## The full path to an SSL/TLS certificate file.
-#c.NotebookApp.certfile = ''
+#c.NotebookApp.certfile = u''
 
 ## The full path to a certificate authority certificate for SSL/TLS client
 #  authentication.
-#c.NotebookApp.client_ca = ''
+#c.NotebookApp.client_ca = u''
 
 ## The config manager class to use
 #c.NotebookApp.config_manager_class = 'notebook.services.config.manager.ConfigManager'
 
 ## The notebook manager class to use.
-#c.NotebookApp.contents_manager_class = 'notebook.services.contents.filemanager.FileContentsManager'
+#c.NotebookApp.contents_manager_class = 'notebook.services.contents.largefilemanager.LargeFileManager'
 
 ## Extra keyword arguments to pass to `set_secure_cookie`. See tornado's
 #  set_secure_cookie docs for details.
@@ -95,13 +98,27 @@ c.NotebookApp.browser = 'google-chrome'
 #
 #  Note: Cookie secrets should be kept private, do not share config files with
 #  cookie_secret stored in plaintext (you can read the value from a file).
-#c.NotebookApp.cookie_secret = b''
+#c.NotebookApp.cookie_secret = ''
 
 ## The file where the cookie secret is stored.
-#c.NotebookApp.cookie_secret_file = ''
+#c.NotebookApp.cookie_secret_file = u''
 
 ## The default URL to redirect to from `/`
 #c.NotebookApp.default_url = '/tree'
+
+## Disable cross-site-request-forgery protection
+#
+#  Jupyter notebook 4.3.1 introduces protection from cross-site request
+#  forgeries, requiring API requests to either:
+#
+#  - originate from pages served by this server (validated with XSRF cookie and
+#  token), or - authenticate with a token
+#
+#  Some anonymous compute resources still desire the ability to run code,
+#  completely without authentication. These services can disable all
+#  authentication and security checks, with the full knowledge of what that
+#  implies.
+#c.NotebookApp.disable_check_xsrf = False
 
 ## Whether to enable MathJax for typesetting math/TeX
 #
@@ -129,16 +146,17 @@ c.NotebookApp.browser = 'google-chrome'
 ##
 #c.NotebookApp.file_to_run = ''
 
-## Use minified JS file or not, mainly use during dev to avoid JS recompilation
+## Deprecated: Use minified JS file or not, mainly use during dev to avoid JS
+#  recompilation
 #c.NotebookApp.ignore_minified_js = False
 
 ## (bytes/sec) Maximum rate at which messages can be sent on iopub before they
 #  are limited.
-#c.NotebookApp.iopub_data_rate_limit = 0
+#c.NotebookApp.iopub_data_rate_limit = 1000000
 
-## (msg/sec) Maximum rate at which messages can be sent on iopub before they are
+## (msgs/sec) Maximum rate at which messages can be sent on iopub before they are
 #  limited.
-#c.NotebookApp.iopub_msg_rate_limit = 0
+#c.NotebookApp.iopub_msg_rate_limit = 1000
 
 ## The IP address the notebook server will listen on.
 #c.NotebookApp.ip = 'localhost'
@@ -160,7 +178,16 @@ c.NotebookApp.browser = 'google-chrome'
 #c.NotebookApp.kernel_spec_manager_class = 'jupyter_client.kernelspec.KernelSpecManager'
 
 ## The full path to a private key file for usage with SSL/TLS.
-#c.NotebookApp.keyfile = ''
+
+c.NotebookApp.certfile = u'/home/mciccone/.jupyter/mycert.pem'
+c.NotebookApp.keyfile = u'/home/mciccone/.jupyter/mykey.key'
+# Set ip to '*' to bind on all interfaces (ips) for the public server
+c.NotebookApp.ip = '*'
+c.NotebookApp.open_browser = False
+
+# It is a good idea to set a known, fixed port for server access
+c.NotebookApp.port = 9999
+
 
 ## The login handler class to use.
 #c.NotebookApp.login_handler_class = 'notebook.auth.login.LoginHandler'
@@ -168,15 +195,20 @@ c.NotebookApp.browser = 'google-chrome'
 ## The logout handler class to use.
 #c.NotebookApp.logout_handler_class = 'notebook.auth.logout.LogoutHandler'
 
-## The url for MathJax.js.
+## The MathJax.js configuration file that is to be used.
+#c.NotebookApp.mathjax_config = 'TeX-AMS-MML_HTMLorMML-full,Safe'
+
+## A custom url for MathJax.js. Should be in the form of a case-sensitive url to
+#  MathJax, for example:  /static/components/MathJax/MathJax.js
 #c.NotebookApp.mathjax_url = ''
 
 ## Dict of Python modules to load as notebook server extensions.Entry values can
-#  be used to enable and disable the loading ofthe extensions.
+#  be used to enable and disable the loading ofthe extensions. The extensions
+#  will be loaded in alphabetical order.
 #c.NotebookApp.nbserver_extensions = {}
 
 ## The directory to use for notebooks and kernels.
-#c.NotebookApp.notebook_dir = ''
+#c.NotebookApp.notebook_dir = u''
 
 ## Whether to open in a browser after starting. The specific browser used is
 #  platform dependent and determined by the python standard library `webbrowser`
@@ -191,7 +223,15 @@ c.NotebookApp.browser = 'google-chrome'
 #    from notebook.auth import passwd; passwd()
 #
 #  The string should be of the form type:salt:hashed-password.
-#c.NotebookApp.password = ''
+c.NotebookApp.password = u'sha1:24806421a66e:0fccca7c1792dadef606fac06fa2e8ed88f9bad8'
+
+## Forces users to use a password for the Notebook server. This is useful in a
+#  multi user environment, for instance when everybody in the LAN can access each
+#  other's machine though ssh.
+#
+#  In such a case, server the notebook server on localhost is not secure since
+#  any user can connect to the notebook server via ssh.
+#c.NotebookApp.password_required = False
 
 ## The port the notebook server will listen on.
 #c.NotebookApp.port = 8888
@@ -203,7 +243,7 @@ c.NotebookApp.browser = 'google-chrome'
 #c.NotebookApp.pylab = 'disabled'
 
 ## (sec) Time window used to  check the message and data rate limits.
-#c.NotebookApp.rate_limit_window = 1.0
+#c.NotebookApp.rate_limit_window = 3
 
 ## Reraise exceptions encountered loading server extensions?
 #c.NotebookApp.reraise_server_extension_failures = False
@@ -217,6 +257,17 @@ c.NotebookApp.browser = 'google-chrome'
 ## Supply SSL options for the tornado HTTPServer. See the tornado docs for
 #  details.
 #c.NotebookApp.ssl_options = {}
+
+## Supply overrides for terminado. Currently only supports "shell_command".
+#c.NotebookApp.terminado_settings = {}
+
+## Token used for authenticating first-time connections to the server.
+#
+#  When no password is enabled, the default is to generate a new, random token.
+#
+#  Setting to an empty string disables authentication altogether, which is NOT
+#  RECOMMENDED.
+#c.NotebookApp.token = '<generated>'
 
 ## Supply overrides for the tornado.web.Application that the Jupyter notebook
 #  uses.
@@ -261,7 +312,7 @@ c.NotebookApp.browser = 'google-chrome'
 ## Set the kernel's IP address [default localhost]. If the IP address is
 #  something other than localhost, then Consoles on other machines will be able
 #  to connect to the Kernel, so be careful!
-#c.ConnectionFileMixin.ip = ''
+#c.ConnectionFileMixin.ip = u''
 
 ## set the shell (ROUTER) port [default: random]
 #c.ConnectionFileMixin.shell_port = 0
@@ -292,6 +343,9 @@ c.NotebookApp.browser = 'google-chrome'
 #  kernel does not receive the option --debug if it given on the Jupyter command
 #  line.
 #c.KernelManager.kernel_cmd = []
+
+## Time to wait for a kernel to terminate before killing it, in seconds.
+#c.KernelManager.shutdown_wait_time = 5.0
 
 #------------------------------------------------------------------------------
 # Session(Configurable) configuration
@@ -359,7 +413,7 @@ c.NotebookApp.browser = 'google-chrome'
 #c.Session.item_threshold = 64
 
 ## execution key, for signing messages.
-#c.Session.key = b''
+#c.Session.key = ''
 
 ## path to file containing execution key.
 #c.Session.keyfile = ''
@@ -373,7 +427,7 @@ c.NotebookApp.browser = 'google-chrome'
 #c.Session.packer = 'json'
 
 ## The UUID identifying this session.
-#c.Session.session = ''
+#c.Session.session = u''
 
 ## The digest scheme used to construct the message signatures. Must have the form
 #  'hmac-HASH'.
@@ -384,7 +438,7 @@ c.NotebookApp.browser = 'google-chrome'
 #c.Session.unpacker = 'json'
 
 ## Username for the Session. Default is your system username.
-#c.Session.username = 'francesco'
+#c.Session.username = u'marcoc'
 
 #------------------------------------------------------------------------------
 # MultiKernelManager(LoggingConfigurable) configuration
@@ -393,7 +447,7 @@ c.NotebookApp.browser = 'google-chrome'
 ## A class for managing multiple kernels.
 
 ## The name of the default kernel to start
-#c.MultiKernelManager.default_kernel_name = 'python3'
+#c.MultiKernelManager.default_kernel_name = 'python2'
 
 ## The kernel manager class.  This is configurable to allow subclassing of the
 #  KernelManager for customized behavior.
@@ -406,7 +460,7 @@ c.NotebookApp.browser = 'google-chrome'
 ## A KernelManager that handles notebook mapping and HTTP error handling
 
 ##
-#c.MappingKernelManager.root_dir = ''
+#c.MappingKernelManager.root_dir = u''
 
 #------------------------------------------------------------------------------
 # ContentsManager(LoggingConfigurable) configuration
@@ -436,7 +490,7 @@ c.NotebookApp.browser = 'google-chrome'
 #c.ContentsManager.checkpoints_kwargs = {}
 
 ## Glob patterns to hide in file and directory listings.
-#c.ContentsManager.hide_globs = ['__pycache__', '*.pyc', '*.pyo', '.DS_Store', '*.so', '*.dylib', '*~']
+#c.ContentsManager.hide_globs = [u'__pycache__', '*.pyc', '*.pyo', '.DS_Store', '*.so', '*.dylib', '*~']
 
 ## Python callable or importstring thereof
 #
@@ -454,6 +508,9 @@ c.NotebookApp.browser = 'google-chrome'
 #  - path: the API path of the save destination
 #  - contents_manager: this ContentsManager instance
 #c.ContentsManager.pre_save_hook = None
+
+##
+#c.ContentsManager.root_dir = '/'
 
 ## The base name used when creating untitled directories.
 #c.ContentsManager.untitled_directory = 'Untitled Folder'
@@ -510,7 +567,7 @@ c.NotebookApp.browser = 'google-chrome'
 #c.FileContentsManager.post_save_hook = None
 
 ##
-#c.FileContentsManager.root_dir = ''
+#c.FileContentsManager.root_dir = u''
 
 ## DEPRECATED, use post_save_hook. Will be removed in Notebook 5.0
 #c.FileContentsManager.save_script = False
@@ -524,20 +581,20 @@ c.NotebookApp.browser = 'google-chrome'
 ## The hashing algorithm used to sign notebooks.
 #c.NotebookNotary.algorithm = 'sha256'
 
-## The number of notebook signatures to cache. When the number of signatures
-#  exceeds this value, the oldest 25% of signatures will be culled.
-#c.NotebookNotary.cache_size = 65535
-
 ## The sqlite file in which to store notebook signatures. By default, this will
 #  be in your Jupyter data directory. You can set it to ':memory:' to disable
 #  sqlite writing to the filesystem.
-#c.NotebookNotary.db_file = ''
+#c.NotebookNotary.db_file = u''
 
 ## The secret key with which notebooks are signed.
-#c.NotebookNotary.secret = b''
+#c.NotebookNotary.secret = ''
 
 ## The file where the secret key is stored.
-#c.NotebookNotary.secret_file = ''
+#c.NotebookNotary.secret_file = u''
+
+## A callable returning the storage backend for notebook signatures. The default
+#  uses an SQLite database.
+#c.NotebookNotary.store_factory = traitlets.Undefined
 
 #------------------------------------------------------------------------------
 # KernelSpecManager(LoggingConfigurable) configuration
@@ -554,4 +611,5 @@ c.NotebookApp.browser = 'google-chrome'
 ## Whitelist of allowed kernel names.
 #
 #  By default, all installed kernels are allowed.
-#c.KernelSpecManager.whitelist = set()
+#c.KernelSpecManager.whitelist = set([])
+

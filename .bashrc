@@ -54,30 +54,18 @@ if [ -f ~/.git-completion.bash ]; then
     source ~/.git-completion.bash
 fi
 
-################################### LAPTOP/Server poli ####################################
-if [[ `hostname` == 'fraptop' || `hostname` == 'nvidia-robotica' || `hostname` == 'AITeam' ]]; then
 
-    # CUDA
-    export LD_LIBRARY_PATH=/usr/local/cuda/lib64/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-    export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/cuda/lib64/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-    export CPATH=/usr/local/cuda/include${CPATH:+:${CPATH}}
-    export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
-    export CUDA_ROOT=/usr/local/cuda/
+# CUDA
+export LD_LIBRARY_PATH=/usr/local/cuda/lib64/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/cuda/lib64/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+export CPATH=/usr/local/cuda/include${CPATH:+:${CPATH}}
+export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
+export CUDA_ROOT=/usr/local/cuda/
 
-    # texlive path
-    export PATH=/usr/local/texlive/2016/bin/x86_64-linux${PATH:+:${PATH}}
-    export INFOPATH=/usr/local/texlive/2016/texmf-dist/doc/info
+# texlive path
+export PATH=/usr/local/texlive/2016/bin/x86_64-linux${PATH:+:${PATH}}
+export INFOPATH=/usr/local/texlive/2016/texmf-dist/doc/info
 
-################################### Mac ####################################
-elif [[ `uname -s` == 'Darwin' ]]; then
-    # Homebrew stuff
-    export PATH=$HOME/.homebrew/bin:$PATH 
-    export PATH=$HOME/Library/Python/2.7/bin:$PATH  # pip stuff
-    export LD_LIBRARY_PATH=$HOME/.homebrew/lib:$LD_LIBRARY_PATH
-
-    # Disable homebrew stats
-    export HOMEBREW_NO_ANALYTICS=1
-fi
 
 # PATHS
 #=======
@@ -198,3 +186,10 @@ export HISTSIZE=1000000
 export HISTTIMEFORMAT="%F %T "
 shopt -s cmdhist
 shopt -s histappend
+
+# added by Miniconda3 installer
+export PATH="/home/mciccone/miniconda3/bin:$PATH"
+# activate conda env
+PY36
+CVD_CLR
+CVD0
