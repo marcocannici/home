@@ -161,9 +161,15 @@ if tput setaf 1 &> /dev/null; then
     # RESET="\033[m"
 fi
 
+if [ -f /.dockerenv ]; then
+    BASH_COLOR=${ORANGE}
+else
+    BASH_COLOR=${GREEN}
+fi
+
 # format bash
 # RESET=${WHITE}
-PS1='\[${GREEN}\]┌─────── \u@\h\[${BLUE}\] [\w]\[${YELLOW}\]$(__git_ps1 " (%s)")\n\[${GREEN}\]└─ λ \[${RESET}\]'
+PS1='\[${BASH_COLOR}\]┌─────── \u@\h\[${BLUE}\] [\w]\[${YELLOW}\]$(__git_ps1 " (%s)")\n\[${BASH_COLOR}\]└─ λ \[${RESET}\]'
 # VIRTUAL_ENV_DISABLE_PROMPT=1 source ~/Enthought/Canopy_64bit/User/bin/activate
 
 # If this is an gnome-terminal set the title to user@host:dir
