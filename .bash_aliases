@@ -136,7 +136,8 @@ export -f cpdataset
 # Manage the weird pkscreen routine for lisa lab
 alias frascreen="pkscreen; sleep 5; screen -r; sleep 2"
 
-CVD_CLR(){ export CUDA_VISIBLE_DEVICES=''; }
+CVD() { echo $CUDA_VISIBLE_DEVICES; }
+CVD_CLR(){ export $CUDA_VISIBLE_DEVICES=''; }
 CVD0(){ export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:+${CUDA_VISIBLE_DEVICES},}0; }
 CVD1(){ export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:+${CUDA_VISIBLE_DEVICES},}1; }
 CVD2(){ export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:+${CUDA_VISIBLE_DEVICES},}2; }
@@ -157,11 +158,6 @@ D12(){ export DISPLAY=localhost:12.0; }
 # ENVIRONMENTS
 # =============
 
-PY36() {
-    export VIRTUAL_ENV="$HOME/miniconda3/envs/py36-torch41-cu92"
-    export PATH="$HOME/miniconda3/envs/py36-torch41-cu92/bin:$PATH"
-    source activate py36-torch41-cu92
-}
 CLR() {
     if [ ! -z $CONDA_DEFAULT_ENV ]; then
         source ~/miniconda3/bin/deactivate 
@@ -171,5 +167,16 @@ CLR() {
     unset VIRTUAL_ENV
 }
 
+SET_CONDA_ENV(){
+   CLR
+   export VIRTUAL_ENV="$HOME/miniconda3/envs/$1"
+   export PATH="$HOME/miniconda3/envs/$1/bin:$PATH"
+   source activate $1
+}
+PY36() { SET_CONDA_ENV "py36"; }
+PY27() { SET_CONDA_ENV "py27"; }
+
 export -f CLR
+export -f SET_CONDA_ENV
 export -f PY36
+export -f PY27

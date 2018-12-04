@@ -35,7 +35,7 @@ fi
 
 # Enable 256 color capabilities if dircolors exist
 # (ls --color=auto) will use solarized colors
-hash dircolors 2>/dev/null && eval `dircolors $HOME/.dircolors`
+hash dircolors 2>/dev/null && eval `dircolors --sh $HOME/.dircolors`
 
 # enable bash completion in interactive shells
 if ! shopt -oq posix; then
@@ -194,8 +194,10 @@ shopt -s cmdhist
 shopt -s histappend
 
 # added by Miniconda3 installer
-export PATH="/home/mciccone/miniconda3/bin:$PATH"
+export PATH="/root/miniconda3/bin:$PATH"
 # activate conda env
-PY36
-CVD_CLR
-CVD0
+if [ ! -z "$CONDA_ENV" ];
+then
+   SET_CONDA_ENV ${CONDA_ENV}
+fi
+
