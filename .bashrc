@@ -56,22 +56,22 @@ fi
 
 
 # CUDA
-export LD_LIBRARY_PATH=/usr/local/cuda/lib64/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/cuda/lib64/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-export CPATH=/usr/local/cuda/include${CPATH:+:${CPATH}}
-export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
-export CUDA_ROOT=/usr/local/cuda/
+# export LD_LIBRARY_PATH=/usr/local/cuda/lib64/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+# export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/cuda/lib64/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+# export CPATH=/usr/local/cuda/include${CPATH:+:${CPATH}}
+# export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
+# export CUDA_ROOT=/usr/local/cuda/
 
 # texlive path
-export PATH=/usr/local/texlive/2016/bin/x86_64-linux${PATH:+:${PATH}}
-export INFOPATH=/usr/local/texlive/2016/texmf-dist/doc/info
+# export PATH=/usr/local/texlive/2016/bin/x86_64-linux${PATH:+:${PATH}}
+# export INFOPATH=/usr/local/texlive/2016/texmf-dist/doc/info
 
 
 # PATHS
 #=======
-export PYTHONPATH_INIT="$PYTHONPATH"
+# export PYTHONPATH_INIT="$PYTHONPATH"
 export PATH=$HOME/.local/bin:${PATH:+:${PATH}}
-export PATH_INIT="$PATH"
+# export PATH_INIT="$PATH"
 
 # Set TMP
 export TMP='/tmp'
@@ -194,8 +194,5 @@ shopt -s cmdhist
 shopt -s histappend
 
 # added by Miniconda3 installer
-export PATH="/home/mciccone/miniconda3/bin:$PATH"
-# activate conda env
-PY36
-CVD_CLR
-CVD0
+export PATH="$HOME/miniconda3/bin:$PATH"
+

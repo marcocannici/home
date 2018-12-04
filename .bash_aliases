@@ -153,23 +153,36 @@ D10(){ export DISPLAY=localhost:10.0; }
 D11(){ export DISPLAY=localhost:11.0; }
 D12(){ export DISPLAY=localhost:12.0; }
 
+# DOCKER
+# ======
 
-# ENVIRONMENTS
-# =============
+alias dk="docker"
+alias dkl="docker logs"
+alias dki="docker images"
+alias dkrm="docker rm"
+alias dkps="docker ps"
+alias dkpsa="docker ps -a"
 
-PY36() {
-    export VIRTUAL_ENV="$HOME/miniconda3/envs/py36-torch41-cu92"
-    export PATH="$HOME/miniconda3/envs/py36-torch41-cu92/bin:$PATH"
-    source activate py36-torch41-cu92
+# dkattach <name>: attach to existing container
+dkattach() { docker start $1 && docker attach $1; }
+# dkrun [<args>] <image>: runs a container from a docker image
+
+dkrun(){ 
+   nvidia-docker run  -ti\
+       --workdir /host$PWD \
+       --volume /:/host \
+       --env PYTHONUNBUFFERED=x \
+       --env CUDA_CACHE_PATH=/host/tmp/cuda-cache "$@"
 }
-CLR() {
-    if [ ! -z $CONDA_DEFAULT_ENV ]; then
-        source ~/miniconda3/bin/deactivate 
-    fi
-    export PYTHONPATH="$PYTHONPATH_INIT"
-    export PATH="$PATH_INIT"
-    unset VIRTUAL_ENV
-}
+# dklaunch [<args>] <image> <cmd>: runs a command on a docker container; when the command finishes, it removes the container
+dklaunch(){ dkrun -ti --rm "$@"; }
+# dkpython <cmd>: launches a python2.7 command on the default docker container
+dkpython(){ dklaunch airlab/dl:latest bash -c "source activate py27; python $@"; }
+# dkipython <image> <cmd>: launches a python2.7 command a a user specified image
+dkipython(){ dklaunch $1 PY27; python "${@:2}"; }
+# dkpython3 <cmd>: launches a python3.6 command on the default docker container
+dkpython3(){ dklaunch airlab/dl:latest bash -c "source activate py36; python $@"; }
+# dkipython3 <image> <cmd>: launches a python3.6 command a a user specified image
+dkipython3(){ dklaunch $1 PY36; python "${@:2}"; }
 
-export -f CLR
-export -f PY36
+
