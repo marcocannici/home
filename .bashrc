@@ -167,9 +167,14 @@ else
     BASH_COLOR=${GREEN}
 fi
 
+# Hide conda current env in the prompt
+if hash conda 2>/dev/null; then
+    conda config --set changeps1 False
+fi
+
 # format bash
 # RESET=${WHITE}
-PS1='\[${BASH_COLOR}\]┌─────── \u@\h\[${BLUE}\] [\w]\[${YELLOW}\]$(__git_ps1 " (%s)")\n\[${BASH_COLOR}\]└─ λ \[${RESET}\]'
+PS1='\[${BASH_COLOR}\]┌─────── \u@\h\[${BLUE}\] [\w]\[${YELLOW}\]$(__git_ps1 " (%s)")\n\[${BASH_COLOR}\]└─ λ ${CONDA_DEFAULT_ENV} \[${RESET}\]'
 # VIRTUAL_ENV_DISABLE_PROMPT=1 source ~/Enthought/Canopy_64bit/User/bin/activate
 
 # If this is an gnome-terminal set the title to user@host:dir
