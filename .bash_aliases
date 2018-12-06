@@ -158,7 +158,7 @@ D12(){ export DISPLAY=localhost:12.0; }
 # ENVIRONMENTS
 # =============
 
-CLR() {
+DEACT() {
     if [ ! -z $CONDA_DEFAULT_ENV ]; then
         source ~/miniconda3/bin/deactivate 
     fi
@@ -167,16 +167,16 @@ CLR() {
     unset VIRTUAL_ENV
 }
 
-SET_CONDA_ENV(){
-   CLR
+ACT(){
+   DEACT
    export VIRTUAL_ENV="$HOME/miniconda3/envs/$1"
    export PATH="$HOME/miniconda3/envs/$1/bin:$PATH"
    source activate $1
 }
-PY36() { SET_CONDA_ENV "py36"; }
-PY27() { SET_CONDA_ENV "py27"; }
+PY36() { ACT "py36"; }
+PY27() { ACT "py27"; }
 
-export -f CLR
-export -f SET_CONDA_ENV
+export -f DEACT
+export -f ACT
 export -f PY36
 export -f PY27
