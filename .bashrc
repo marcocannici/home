@@ -199,10 +199,10 @@ shopt -s cmdhist
 shopt -s histappend
 
 # added by Miniconda3 installer
-export PATH="~/miniconda3/bin:$PATH"
+export PATH="/tmp/miniconda3/bin:$PATH"
 # activate conda env
 if [ ! -z "$CONDA_ENV" ];
 then
-   SET_CONDA_ENV ${CONDA_ENV}
+   ACT ${CONDA_ENV}
 fi
 

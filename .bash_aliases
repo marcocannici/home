@@ -160,7 +160,7 @@ D12(){ export DISPLAY=localhost:12.0; }
 
 DEACT() {
     if [ ! -z $CONDA_DEFAULT_ENV ]; then
-        source ~/miniconda3/bin/deactivate 
+        source /tmp/miniconda3/bin/deactivate 
     fi
     export PYTHONPATH="$PYTHONPATH_INIT"
     export PATH="$PATH_INIT"
@@ -169,8 +169,8 @@ DEACT() {
 
 ACT(){
    DEACT
-   export VIRTUAL_ENV="$HOME/miniconda3/envs/$1"
-   export PATH="$HOME/miniconda3/envs/$1/bin:$PATH"
+   export VIRTUAL_ENV="/tmp/miniconda3/envs/$1"
+   export PATH="/tmp/miniconda3/envs/$1/bin:$PATH"
    source activate $1
 }
 PY36() { ACT "py36"; }
