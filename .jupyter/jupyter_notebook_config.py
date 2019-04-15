@@ -179,8 +179,8 @@
 
 ## The full path to a private key file for usage with SSL/TLS.
 
-c.NotebookApp.certfile = u'/home/mciccone/.jupyter/mycert.pem'
-c.NotebookApp.keyfile = u'/home/mciccone/.jupyter/mykey.key'
+c.NotebookApp.certfile = os.path.expanduser('~') + '/.jupyter/cert.pem'
+c.NotebookApp.keyfile = os.path.expanduser('~') + '/.jupyter/key.key'
 # Set ip to '*' to bind on all interfaces (ips) for the public server
 c.NotebookApp.ip = '*'
 c.NotebookApp.open_browser = False
