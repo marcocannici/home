@@ -159,30 +159,14 @@ D12(){ export DISPLAY=localhost:12.0; }
 alias dk="docker"
 alias dkl="docker logs"
 alias dki="docker images"
-alias dkrm="docker rm"
 alias dkps="docker ps"
 alias dkpsa="docker ps -a"
 
+# dkrmname <name>: remove all containers having <name> in the container's name
+dkrmname(){
+    ids=`docker ps -a | grep $1 | awk '{print $1;}'`
+    docker rm $ids
+}
+
 # dkattach <name>: attach to existing container
 dkattach() { docker start $1 && docker attach $1; }
-# dkrun [<args>] <image>: runs a container from a docker image
-
-dkrun(){ 
-   nvidia-docker run  -ti\
-       --workdir /host$PWD \
-       --volume /:/host \
-       --env PYTHONUNBUFFERED=x \
-       --env CUDA_CACHE_PATH=/host/tmp/cuda-cache "$@"
-}
-# dklaunch [<args>] <image> <cmd>: runs a command on a docker container; when the command finishes, it removes the container
-dklaunch(){ dkrun -ti --rm "$@"; }
-# dkpython <cmd>: launches a python2.7 command on the default docker container
-dkpython(){ dklaunch airlab/dl:latest bash -c "source activate py27; python $@"; }
-# dkipython <image> <cmd>: launches a python2.7 command a a user specified image
-dkipython(){ dklaunch $1 PY27; python "${@:2}"; }
-# dkpython3 <cmd>: launches a python3.6 command on the default docker container
-dkpython3(){ dklaunch airlab/dl:latest bash -c "source activate py36; python $@"; }
-# dkipython3 <image> <cmd>: launches a python3.6 command a a user specified image
-dkipython3(){ dklaunch $1 PY36; python "${@:2}"; }
-
-
