@@ -136,6 +136,7 @@ export -f cpdataset
 # Manage the weird pkscreen routine for lisa lab
 alias frascreen="pkscreen; sleep 5; screen -r; sleep 2"
 
+CVD() { echo $CUDA_VISIBLE_DEVICES; }
 CVD_CLR(){ export CUDA_VISIBLE_DEVICES=''; }
 CVD0(){ export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:+${CUDA_VISIBLE_DEVICES},}0; }
 CVD1(){ export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:+${CUDA_VISIBLE_DEVICES},}1; }
