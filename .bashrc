@@ -56,11 +56,11 @@ fi
 
 
 # CUDA
-# export LD_LIBRARY_PATH=/usr/local/cuda/lib64/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-# export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/cuda/lib64/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-# export CPATH=/usr/local/cuda/include${CPATH:+:${CPATH}}
-# export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
-# export CUDA_ROOT=/usr/local/cuda/
+export LD_LIBRARY_PATH=/usr/local/cuda/lib64/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/cuda/lib64/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+export CPATH=/usr/local/cuda/include${CPATH:+:${CPATH}}
+export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
+export CUDA_ROOT=/usr/local/cuda/
 
 # texlive path
 # export PATH=/usr/local/texlive/2016/bin/x86_64-linux${PATH:+:${PATH}}
