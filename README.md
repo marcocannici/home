@@ -10,6 +10,7 @@
 * Move every file to the your home:
 
   (LINUX) `find . -mindepth 1 -maxdepth 1 -exec mv -t.. -- {} +`
+  <br/>
   (Mac) `find . -mindepth 1 -maxdepth 1  -execdir mv '{}' .. \;`
   
 * Remove the temporary directory: `cd ; rm -r ~/home`
