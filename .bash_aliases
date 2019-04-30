@@ -75,23 +75,6 @@ _complete_ssh_hosts () {
 }
 complete -F _complete_ssh_hosts ssh
 
-# Montreal
-lisa() {
-    if [ $# == 0 ]; then
-        sshpass -f ~/.lisa ssh -YC visin@elisa1
-    elif [ $# == 1 ]; then
-        sshpass -f ~/.lisa ssh -YC -L $1:localhost:$1 visin@elisa1
-    else
-        echo "usage: sshlisa [port]"
-    fi
-}
-alias lisassh=lisa
-lisascp() {
-    sshpass -f ~/.lisa scp -Cr visin@elisa1.iro.umontreal.ca:$1 $2
-}
-lisarsync() {
-    sshpass -f ~/.lisa rsync -a -X --partial -h --progress --copy-links visin@elisa1.iro.umontreal.ca:$1 $2
-}
 alias squeue='squeue -o "%.6i %.1t %.6q %.7m %.12b %.3C %.3D %.18k %.11L %R"'
 
 # Quick and dirty installation of packages with pip from GitHub.
@@ -133,9 +116,6 @@ cpdataset() {
     }
 export -f cpdataset
 
-# Manage the weird pkscreen routine for lisa lab
-alias frascreen="pkscreen; sleep 5; screen -r; sleep 2"
-
 CVD() { echo $CUDA_VISIBLE_DEVICES; }
 CVD_CLR(){ export CUDA_VISIBLE_DEVICES=''; }
 CVD0(){ export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:+${CUDA_VISIBLE_DEVICES},}0; }
@@ -156,12 +136,6 @@ D12(){ export DISPLAY=localhost:12.0; }
 
 # DOCKER
 # ======
-
-alias dk="docker"
-alias dkl="docker logs"
-alias dki="docker images"
-alias dkps="docker ps"
-alias dkpsa="docker ps -a"
 
 # tb-docker <port>
 tb-docker() {
