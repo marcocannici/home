@@ -163,6 +163,12 @@ alias dki="docker images"
 alias dkps="docker ps"
 alias dkpsa="docker ps -a"
 
+# tb-docker <port>
+tb-docker() {
+    run-docker --container_name="{user}_tensorboard_{date}" --image_name="tensorflow/tensorflow" \
+    --docker_args="-p $1" '' '' tensorboard --port $1 --logdir /exp;
+}
+
 # dkrmname <name>: remove all containers having <name> in the container's name
 dkrmname(){
     ids=`docker ps -a | grep $1 | awk '{print $1;}'`
