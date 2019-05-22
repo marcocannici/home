@@ -140,7 +140,7 @@ D12(){ export DISPLAY=localhost:12.0; }
 # tb-docker <port>
 tb-docker() {
     run-docker --container_name="{user}_tensorboard_{date}" --image_name="tensorflow/tensorflow" \
-    --docker_args="-p $1" '' '' tensorboard --port $1 --logdir /exp;
+    --docker_args="-p $1:$1" '' '' tensorboard --port $1 --logdir /exp;
 }
 
 # dkrmname <name>: remove all containers having <name> in the container's name
